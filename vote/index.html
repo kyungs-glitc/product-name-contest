@@ -13,8 +13,9 @@
 <body>
 <main class="wrap">
   <nav class="pages" aria-label="페이지">
-    <a href="./" aria-current="page">1. 후보 검토 결과</a>
-    <a href="./ballot.html">2. 투표</a>
+    <a href="../">1. 공모</a>
+    <a href="./" aria-current="page">2. 검토</a>
+    <a href="./ballot.html">3. 투표</a>
   </nav>
 
   <h1>crayon CUDP,<br>새 이름 후보를 확인해 주세요</h1>
@@ -22,16 +23,19 @@
   <p id="notice" class="notice" role="status" hidden></p>
 
   <div id="content" class="stack">
-    <section class="summary" aria-label="검토 요약">
-      <div><b id="count-all">0</b><span>검토한 이름</span></div>
-      <div><b id="count-pass">0</b><span>상표 검토 통과</span></div>
-      <div><b id="count-final">0</b><span>최종 후보</span></div>
-    </section>
-
     <section class="board" aria-labelledby="final-title">
       <h2 id="final-title">최종 후보</h2>
       <ul id="finals"></ul>
       <a class="primary" href="./ballot.html">투표하러 가기</a>
+    </section>
+
+    <section class="rules">
+      <h2>진행 순서</h2>
+      <ol class="steps">
+        <li><span class="no">1</span>이름 응모</li>
+        <li class="now"><span class="no">2</span>상표 검색으로 후보 추리기 <span class="tag">지금</span></li>
+        <li><span class="no">3</span>전 직원 투표</li>
+      </ol>
     </section>
 
     <section class="board" aria-labelledby="review-title">

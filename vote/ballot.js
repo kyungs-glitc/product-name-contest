@@ -64,10 +64,10 @@ function renderVoters() {
   const select = $('f-voter'), current = select.value;
   const placeholder = el('option', '', loaded ? '내 이름을 고르세요' : '명단을 불러오는 중입니다');
   placeholder.value = '';
-  select.replaceChildren(placeholder, ...roster.map(p => {
-    const opt = el('option', '', p.voted ? `${p.name} (투표 완료)` : p.name);
+  // 이미 투표한 이름은 목록에서 뺀다. 잘못 눌렸으면 담당자가 시트에서 정리한다.
+  select.replaceChildren(placeholder, ...roster.filter(p => !p.voted).map(p => {
+    const opt = el('option', '', p.name);
     opt.value = p.name;
-    opt.disabled = p.voted; // 이미 투표한 이름은 고를 수 없다. 잘못 눌렸으면 담당자가 시트에서 정리한다.
     return opt;
   }));
   if (roster.some(p => p.name === current && !p.voted)) select.value = current;
@@ -78,7 +78,7 @@ function renderStatus() {
   $('people').replaceChildren(...roster.map(p => {
     const li = el('li', p.voted ? 'person done' : 'person');
     li.append(el('span', '', p.name));
-    if (p.voted) li.append(el('span', 'tag', '투표 완료'));
+    if (p.voted) li.append(el('span', 'sr', '투표 완료')); // 색만으로 알리지 않도록 읽어 주는 글자를 둔다
     else if (p.name === justVoted) li.append(el('span', 'tag wait', '반영 대기'));
     return li;
   }));

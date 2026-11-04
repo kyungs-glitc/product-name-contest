@@ -14,10 +14,6 @@ if (!READY) {
   $('notice').hidden = false;
   $('notice').textContent = '상표 검토를 진행하고 있습니다. 결과가 확정되면 이곳에 표시됩니다.';
 } else {
-  $('count-all').textContent = REVIEWS.length;
-  $('count-pass').textContent = REVIEWS.filter(r => r.result === '통과').length;
-  $('count-final').textContent = finalists.length;
-
   $('finals').replaceChildren(...finalists.map(r => {
     const li = el('li', 'final');
     li.append(el('span', 'nm', r.name), el('span', 'why', r.why));

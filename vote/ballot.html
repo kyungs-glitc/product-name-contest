@@ -13,8 +13,9 @@
 <body>
 <main class="wrap">
   <nav class="pages" aria-label="페이지">
-    <a href="./">1. 후보 검토 결과</a>
-    <a href="./ballot.html" aria-current="page">2. 투표</a>
+    <a href="../">1. 공모</a>
+    <a href="./">2. 검토</a>
+    <a href="./ballot.html" aria-current="page">3. 투표</a>
   </nav>
 
   <h1>crayon CUDP,<br>새 이름에 투표해 주세요</h1>
@@ -33,15 +34,6 @@
   </form>
   <p id="notice" class="notice" role="status" hidden></p>
 
-  <section class="board" aria-labelledby="board-title">
-    <div class="board-head">
-      <h2 id="board-title">투표 현황</h2>
-      <p id="tally" class="tally"></p>
-    </div>
-    <p id="status-note" class="note" role="status" hidden></p>
-    <ul id="people"></ul>
-  </section>
-
   <section class="rules">
     <h2>진행 순서</h2>
     <ol class="steps">
@@ -49,6 +41,15 @@
       <li><span class="no">2</span>상표 검색으로 후보 추리기</li>
       <li class="now"><span class="no">3</span>전 직원 투표 <span class="tag">지금</span></li>
     </ol>
+  </section>
+
+  <section class="board" aria-labelledby="board-title">
+    <div class="board-head">
+      <h2 id="board-title">투표 현황</h2>
+      <p id="tally" class="tally"></p>
+    </div>
+    <p id="status-note" class="note" role="status" hidden></p>
+    <ul id="people"></ul>
   </section>
 </main>
 <script type="module" src="./ballot.js"></script>

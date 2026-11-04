@@ -70,6 +70,7 @@ function render() {
   const closed = closedBySheet || Date.now() >= DEADLINE.getTime();
   $('form').hidden = closed;
   $('closed').hidden = !closed;
+  document.querySelector('.steps .tag').hidden = closed;
 }
 
 // ponytail: gviz는 한 열의 값을 다수 자료형으로 맞춘다. 글자 이름 사이의 숫자만 있는 이름은 빈칸으로 올 수 있다(시트에는 남는다).

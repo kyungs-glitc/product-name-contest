@@ -2,13 +2,13 @@ import { normalize, parseCsv, toEntries, isClosedBySheet } from './logic.js';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScrlWmUM1ZKDFdGTg7XmzUHIqunk4-maDLF785r5-6hqzXPIQ/formResponse';
 const FIELDS = { name: 'entry.69007877', why: 'entry.971116462', who: 'entry.1176835550' };
-// 응답 시트를 웹에 게시한 주소. 비어 있으면 제출만 되고 목록은 나오지 않는다.
-const SHEET_PUB_URL = '';
+// 응답 시트. 링크 권한은 뷰어다. 편집 권한을 열면 이 주소를 아는 누구나 응답을 고칠 수 있다.
+const SHEET_ID = '1xhNUG1WI_LKoT8WZmwP66g3z_U-er4KTHw45KideVC8';
 const RESPONSES_GID = '1290317035', SETTINGS_GID = '1532990872';
 const DEADLINE = new Date('2026-11-06T18:00:00+09:00'); // 구글 폼의 응답 종료일과 같아야 한다
 
 const POLL_MS = 60_000;
-// 게시된 CSV는 구글이 몇 분씩 묶어 내보낸다. 이보다 늦으면 제출이 실패한 것으로 안내한다.
+// 제출 후 이 시간이 지나도 시트에 나타나지 않으면 접수되지 않은 것으로 안내한다.
 const PENDING_LIMIT_MS = 10 * 60_000;
 const SWEEP_SECONDS = 6; // CSS의 spin·ping 주기와 같아야 한다
 
@@ -72,15 +72,16 @@ function render() {
   $('closed').hidden = !closed;
 }
 
-async function readCsv(gid) {
-  const res = await fetch(`${SHEET_PUB_URL}?gid=${gid}&single=true&output=csv&t=${Date.now()}`, { cache: 'no-store' });
+// ponytail: gviz는 한 열의 값을 다수 자료형으로 맞춘다. 글자 이름 사이의 숫자만 있는 이름은 빈칸으로 올 수 있다(시트에는 남는다).
+async function readCsv(gid, headers) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}&headers=${headers}&t=${Date.now()}`;
+  const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   return parseCsv(await res.text());
 }
 async function load() {
-  if (!SHEET_PUB_URL) { $('list-note').textContent = '목록을 준비하고 있습니다.'; return render(); }
   try {
-    const [responses, settings] = await Promise.all([readCsv(RESPONSES_GID), readCsv(SETTINGS_GID)]);
+    const [responses, settings] = await Promise.all([readCsv(RESPONSES_GID, 1), readCsv(SETTINGS_GID, 0)]);
     entries = toEntries(responses);
     closedBySheet = isClosedBySheet(settings);
     pending = pending.filter(p => !entries.some(e => normalize(e.name) === normalize(p.name)));
@@ -117,9 +118,10 @@ $('form').addEventListener('submit', async e => {
     pending.push({ name, why, who, sentAt: Date.now() });
     $('f-name').value = '';
     $('f-why').value = '';
-    setStatus('ok', `'${name}'을(를) 제출했습니다. 몇 분 안에 목록에 반영됩니다.`);
+    setStatus('ok', `'${name}'을(를) 제출했습니다. 잠시 후 목록에 반영됩니다.`);
     render();
     $('f-name').focus();
+    setTimeout(load, 3000);
   } catch {
     setStatus('bad', '제출하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
   } finally {

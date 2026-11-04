@@ -1,4 +1,4 @@
-import { normalize, parseCsv, toEntries, isClosedBySheet } from './logic.js';
+import { parseCsv, toEntries, isClosedBySheet } from './logic.js';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScrlWmUM1ZKDFdGTg7XmzUHIqunk4-maDLF785r5-6hqzXPIQ/formResponse';
 const FIELDS = { name: 'entry.69007877', why: 'entry.971116462', who: 'entry.1176835550' };
@@ -21,7 +21,6 @@ const el = (tag, cls, text) => {
   if (text !== undefined) n.textContent = text;
   return n;
 };
-const isDuplicate = name => [...entries, ...pending].some(e => normalize(e.name) === normalize(name));
 function setStatus(kind, text) {
   $('status').className = 'status' + (kind ? ' ' + kind : '');
   $('status').textContent = text;
@@ -85,7 +84,8 @@ async function load() {
     const [responses, settings] = await Promise.all([readCsv(RESPONSES_GID, 1), readCsv(SETTINGS_GID, 0)]);
     entries = toEntries(responses);
     closedBySheet = isClosedBySheet(settings);
-    pending = pending.filter(p => !entries.some(e => normalize(e.name) === normalize(p.name)));
+    // 같은 이름이 이미 있을 수 있어 이름과 의미를 함께 비교한다.
+    pending = pending.filter(p => !entries.some(e => e.name === p.name && e.why === p.why));
     loaded = true;
   } catch {
     // 이전 목록을 유지하고 다음 주기에 다시 읽는다.
@@ -94,18 +94,10 @@ async function load() {
   render();
 }
 
-$('f-name').addEventListener('input', () => {
-  const name = $('f-name').value.trim();
-  if (name && isDuplicate(name)) setStatus('warn', `'${name}'은(는) 이미 올라와 있습니다. 다른 이름을 적어 주세요.`);
-  else if (name) setStatus('ok', `'${name}'은(는) 아직 올라오지 않은 이름입니다.`);
-  else setStatus('', '');
-});
-
 $('form').addEventListener('submit', async e => {
   e.preventDefault();
   const name = $('f-name').value.trim(), why = $('f-why').value.trim(), who = $('f-who').value.trim();
   if (!name || !why) return setStatus('warn', '제품 이름과 이름 의미를 모두 적어 주세요.');
-  if (isDuplicate(name)) return setStatus('warn', `'${name}'은(는) 이미 올라와 있습니다. 다른 이름을 적어 주세요.`);
   const btn = $('f-submit');
   btn.disabled = true;
   setStatus('', '제출하는 중입니다.');

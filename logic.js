@@ -25,13 +25,13 @@ export function parseCsv(text) {
 // 응답 CSV → 목록. 시트에 올라온 순서를 지키고, 같은 이름은 먼저 올라온 것만 남긴다.
 export function toEntries(rows) {
   const [head = [], ...body] = rows;
-  const [n, w, p] = ['제품 이름', '이름 의미', '제안자'].map(t => head.findIndex(h => h.startsWith(t)));
+  const [n, w] = ['제품 이름', '이름 의미'].map(t => head.findIndex(h => h.startsWith(t)));
   const seen = new Set();
   return body.flatMap(r => {
     const name = (r[n] ?? '').trim().slice(0, 30), key = normalize(name);
     if (!key || seen.has(key)) return [];
     seen.add(key);
-    return [{ name, why: (r[w] ?? '').trim().slice(0, 200), who: (r[p] ?? '').trim().slice(0, 30) }];
+    return [{ name, why: (r[w] ?? '').trim().slice(0, 200) }];
   });
 }
 

@@ -1,4 +1,4 @@
-import { READY, REVIEWS, finalists } from './candidates.js';
+import { REVIEW_OPEN, VOTE_OPEN, REVIEWS, finalists } from './candidates.js';
 
 const $ = id => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -9,11 +9,12 @@ const el = (tag, cls, text) => {
 };
 const RESULT_CLASS = { 통과: 'pass', 보류: 'hold', 탈락: 'fail' };
 
-if (!READY) {
+if (!REVIEW_OPEN) {
   $('content').hidden = true;
   $('notice').hidden = false;
   $('notice').textContent = '상표 검토를 진행하고 있습니다. 결과가 확정되면 이곳에 표시됩니다.';
 } else {
+  $('go-vote').hidden = !VOTE_OPEN;
   $('finals').replaceChildren(...finalists.map(r => {
     const li = el('li', 'final');
     li.append(el('span', 'nm', r.name), el('span', 'why', r.why));

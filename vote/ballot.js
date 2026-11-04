@@ -1,5 +1,5 @@
 import { parseCsv, toRoster } from '../logic.js';
-import { READY, finalists as CANDIDATES } from './candidates.js';
+import { VOTE_OPEN, finalists as CANDIDATES } from './candidates.js';
 
 const DEADLINE = null; // 예: new Date('2026-11-13T18:00:00+09:00'). 구글 폼의 응답 종료일과 같아야 한다
 
@@ -56,7 +56,7 @@ $('choices').addEventListener('change', syncPicks);
 syncPicks();
 
 function applyState() {
-  if (!READY) showNotice('투표를 준비하고 있습니다. 후보가 확정되면 열립니다.');
+  if (!VOTE_OPEN) showNotice('투표를 준비하고 있습니다. 후보가 확정되면 열립니다.');
   else if (DEADLINE && Date.now() >= DEADLINE.getTime()) showNotice('투표가 마감되었습니다. 참여해 주셔서 감사합니다.');
 }
 
@@ -128,5 +128,9 @@ $('form').addEventListener('submit', async e => {
 });
 
 applyState();
-load();
-setInterval(() => { applyState(); load(); }, POLL_MS);
+if (VOTE_OPEN) {
+  load();
+  setInterval(() => { applyState(); load(); }, POLL_MS);
+} else {
+  document.querySelector('.board').hidden = true; // 잠긴 동안에는 명단을 읽지 않는다
+}

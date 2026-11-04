@@ -36,7 +36,8 @@ h1{font-size:clamp(32px,5vw,48px);line-height:1.2;font-weight:700;color:var(--st
 
 .pages{display:flex;gap:4px;border-bottom:1px solid var(--line)}
 .pages a{padding:8px 14px;margin-bottom:-1px;font-size:14px;color:var(--text);text-decoration:none;border-bottom:2px solid transparent}
-.pages a:hover{color:var(--strong)}
+.pages a[href]:hover{color:var(--strong)}
+.pages a[aria-disabled="true"]{color:var(--muted);opacity:.6;cursor:not-allowed}
 .pages a[aria-current="page"]{color:var(--strong);font-weight:700;border-bottom-color:var(--accent)}
 
 .top{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;align-items:center}
@@ -102,8 +103,8 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
 <main class="wrap">
   <nav class="pages" aria-label="페이지">
     <a href="./" aria-current="page">1. 공모</a>
-    <a href="./vote/">2. 검토</a>
-    <a href="./vote/ballot.html">3. 투표</a>
+    <a data-tab="review" data-href="./vote/">2. 검토</a>
+    <a data-tab="vote" data-href="./vote/ballot.html">3. 투표</a>
   </nav>
 
   <h1>crayon CUDP,<br>이 제품의 새 이름을 정해 주세요</h1>
@@ -145,6 +146,7 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
     <ol id="list"></ol>
   </section>
 </main>
-<script type="module" src="./app.js"></script>
+<script type="module" src="./nav.js"></script>
+<script type="module" src="./app.js?v=2"></script>
 </body>
 </html>

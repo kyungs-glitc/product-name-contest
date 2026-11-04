@@ -1,7 +1,8 @@
 import { normalize, parseCsv, toEntries, isClosedBySheet } from './logic.js';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScrlWmUM1ZKDFdGTg7XmzUHIqunk4-maDLF785r5-6hqzXPIQ/formResponse';
-const FIELDS = { name: 'entry.69007877', why: 'entry.971116462' };
+// who는 시트에만 남기고 화면에는 표시하지 않는다.
+const FIELDS = { name: 'entry.69007877', why: 'entry.971116462', who: 'entry.1176835550' };
 // 응답 시트. 링크 권한은 뷰어다. 편집 권한을 열면 이 주소를 아는 누구나 응답을 고칠 수 있다.
 const SHEET_ID = '1xhNUG1WI_LKoT8WZmwP66g3z_U-er4KTHw45KideVC8';
 const RESPONSES_GID = '1290317035', SETTINGS_GID = '1532990872';
@@ -101,7 +102,7 @@ $('f-name').addEventListener('input', () => {
 
 $('form').addEventListener('submit', async e => {
   e.preventDefault();
-  const name = $('f-name').value.trim(), why = $('f-why').value.trim();
+  const name = $('f-name').value.trim(), why = $('f-why').value.trim(), who = $('f-who').value.trim();
   if (!name || !why) return setStatus('warn', '제품 이름과 이름 의미를 모두 적어 주세요.');
   if (isDuplicate(name)) return setStatus('warn', `'${name}'은(는) 이미 올라와 있습니다. 다른 이름을 적어 주세요.`);
   const btn = $('f-submit');
@@ -112,11 +113,12 @@ $('form').addEventListener('submit', async e => {
     await fetch(FORM_URL, {
       method: 'POST',
       mode: 'no-cors',
-      body: new URLSearchParams({ [FIELDS.name]: name, [FIELDS.why]: why }),
+      body: new URLSearchParams({ [FIELDS.name]: name, [FIELDS.why]: why, [FIELDS.who]: who }),
     });
     pending.push({ name, why, sentAt: Date.now() });
     $('f-name').value = '';
     $('f-why').value = '';
+    $('f-who').value = '';
     setStatus('ok', `'${name}'을(를) 제출했습니다. 잠시 후 목록에 반영됩니다.`);
     render();
     $('f-name').focus();

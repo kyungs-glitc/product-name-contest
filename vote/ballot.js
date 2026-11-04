@@ -1,19 +1,10 @@
 import { parseCsv, toRoster } from '../logic.js';
+import { READY, finalists as CANDIDATES } from './candidates.js';
 
-// 공개 전 할 일: 1) CANDIDATES와 구글 폼 선택지를 실제 후보로 바꾼다 2) 폼을 게시한다 3) DEADLINE을 정한다 4) READY를 true로 바꾼다
-const READY = false;
 const DEADLINE = null; // 예: new Date('2026-11-13T18:00:00+09:00'). 구글 폼의 응답 종료일과 같아야 한다
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfdbIeRtS_T6rCsCfom0NxlhWYU9l2o6MwTG6AKbOycAZl8Ew/formResponse';
 const FIELDS = { choice: 'entry.1198450613', voter: 'entry.401715241' };
-// name은 구글 폼의 선택지와 글자까지 같아야 한다. 다르면 구글이 그 응답을 버린다.
-// 지금은 화면 확인용 임시 후보다. 상표 검토를 통과한 실제 후보로 바꾼다.
-const CANDIDATES = [
-  { name: '임시 후보 하늘지기', why: '하늘을 지키는 파수꾼이라는 뜻' },
-  { name: '임시 후보 새벽눈', why: '남들보다 먼저 위협을 알아보는 눈' },
-  { name: '임시 후보 한울타리', why: '여러 센서를 하나로 묶는 울타리' },
-  { name: '임시 후보 온누리망', why: '온 세상을 살피는 감시망' },
-];
 const PICKS = 2; // 정확히 이 개수를 골라야 제출된다
 // 공개용 시트. 이름과 투표 여부만 들어 있다. 어떤 이름을 골랐는지는 비공개 투표 시트에만 있다.
 const STATUS_SHEET_ID = '1YDHIWzrIaQCxTC6jFN-BWObWYUCMjI7LHaFLJsmXKdc';

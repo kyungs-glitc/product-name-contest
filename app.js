@@ -132,7 +132,8 @@ $('form').addEventListener('submit', async e => {
 // 마감까지 남은 시간을 1초마다 고치고, 시각이 되면 입력칸을 닫는다.
 function tick() {
   const left = DEADLINE.getTime() - Date.now();
-  $('timer').textContent = remainingText(left) + ' 남음';
+  const timer = $('timer');
+  if (timer) timer.textContent = remainingText(left) + ' 남음'; // 캐시된 옛 화면에는 타이머 칸이 없다
   if (left <= 0) { clearInterval(timerId); render(); }
 }
 const timerId = setInterval(tick, 1000);

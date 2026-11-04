@@ -1,5 +1,8 @@
 // 화면과 무관한 계산만 둔다. logic.test.mjs로 검사한다.
 
+// 띄어쓰기·대소문자·기호만 다른 이름은 같은 이름으로 본다.
+export const normalize = s => s.normalize('NFC').toLowerCase().replace(/[\s\-_.·]/g, '');
+
 // RFC 4180. 시트의 CSV는 칸 안의 쉼표·줄바꿈·따옴표를 따옴표로 감싸서 내보낸다.
 export function parseCsv(text) {
   const rows = [];
@@ -19,13 +22,15 @@ export function parseCsv(text) {
   return rows;
 }
 
-// 응답 CSV → 목록. 시트에 올라온 순서를 지킨다. 같은 이름도 각각 올릴 수 있다.
+// 응답 CSV → 목록. 시트에 올라온 순서를 지키고, 같은 이름은 먼저 올라온 것만 남긴다.
 export function toEntries(rows) {
   const [head = [], ...body] = rows;
   const [n, w, p] = ['제품 이름', '이름 의미', '제안자'].map(t => head.findIndex(h => h.startsWith(t)));
+  const seen = new Set();
   return body.flatMap(r => {
-    const name = (r[n] ?? '').trim().slice(0, 30);
-    if (!name) return [];
+    const name = (r[n] ?? '').trim().slice(0, 30), key = normalize(name);
+    if (!key || seen.has(key)) return [];
+    seen.add(key);
     return [{ name, why: (r[w] ?? '').trim().slice(0, 200), who: (r[p] ?? '').trim().slice(0, 30) }];
   });
 }

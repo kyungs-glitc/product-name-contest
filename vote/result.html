@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>crayon CUDP 새 이름 투표 결과</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css?v=3">
+</head>
+<body>
+<main class="wrap">
+  <nav class="pages" aria-label="페이지">
+    <a href="../">1. 공모</a>
+    <a data-tab="review" data-href="./">2. 검토</a>
+    <a data-tab="vote" data-href="./ballot.html">3. 투표</a>
+    <a href="./result.html" aria-current="page">4. 결과</a>
+  </nav>
+
+  <h1>crayon CUDP,<br>새 이름 투표 결과</h1>
+
+  <p id="notice" class="notice" role="status" hidden></p>
+
+  <div id="content" class="stack">
+    <section id="verdict" class="verdict" aria-live="polite"></section>
+
+    <section class="board" aria-labelledby="rounds-title">
+      <h2 id="rounds-title">회차별 결과</h2>
+      <div id="rounds" class="stack"></div>
+      <p class="note">담당자가 중복 투표를 확인한 뒤 집계한 결과입니다.</p>
+    </section>
+  </div>
+</main>
+<script type="module" src="../nav.js?v=3"></script>
+<script type="module" src="./result.js?v=3"></script>
+</body>
+</html>

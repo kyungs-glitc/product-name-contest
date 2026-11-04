@@ -1,4 +1,4 @@
-import { normalize, parseCsv, toEntries, isClosedBySheet } from './logic.js';
+import { normalize, parseCsv, toEntries, isClosedBySheet, remainingText } from './logic.js?v=3';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScrlWmUM1ZKDFdGTg7XmzUHIqunk4-maDLF785r5-6hqzXPIQ/formResponse';
 // who는 시트에만 남기고 화면에는 표시하지 않는다.
@@ -6,7 +6,7 @@ const FIELDS = { name: 'entry.69007877', why: 'entry.971116462', who: 'entry.117
 // 응답 시트. 링크 권한은 뷰어다. 편집 권한을 열면 이 주소를 아는 누구나 응답을 고칠 수 있다.
 const SHEET_ID = '1xhNUG1WI_LKoT8WZmwP66g3z_U-er4KTHw45KideVC8';
 const RESPONSES_GID = '1290317035', SETTINGS_GID = '1532990872';
-const DEADLINE = new Date('2026-11-06T18:00:00+09:00'); // 구글 폼의 응답 종료일과 같아야 한다
+const DEADLINE = new Date('2026-11-06T15:00:00+09:00'); // 구글 폼의 응답 종료일과 같아야 한다
 
 const POLL_MS = 60_000;
 // 제출 후 이 시간이 지나도 시트에 나타나지 않으면 접수되지 않은 것으로 안내한다.
@@ -128,6 +128,15 @@ $('form').addEventListener('submit', async e => {
     btn.disabled = false;
   }
 });
+
+// 마감까지 남은 시간을 1초마다 고치고, 시각이 되면 입력칸을 닫는다.
+function tick() {
+  const left = DEADLINE.getTime() - Date.now();
+  $('timer').textContent = remainingText(left) + ' 남음';
+  if (left <= 0) { clearInterval(timerId); render(); }
+}
+const timerId = setInterval(tick, 1000);
+tick();
 
 load();
 setInterval(load, POLL_MS);

@@ -53,6 +53,10 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
 textarea,.who-input{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:10px 12px;margin-bottom:8px}
 textarea{resize:vertical;min-height:72px}
 textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
+.submit-row{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap}
+.timer{font-size:14px;display:flex;flex-direction:column;line-height:1.4}
+.timer-label{font-size:13px;color:var(--muted)}
+.timer b{font:500 15px var(--mono);color:var(--warn);font-variant-numeric:tabular-nums}
 .status{min-height:26px;font-size:14px}
 .status.ok{color:var(--ok)} .status.warn{color:var(--warn)} .status.bad{color:var(--bad)}
 .primary{font:inherit;cursor:pointer;background:var(--accent);color:var(--bg);font-weight:700;border:0;border-radius:4px;padding:10px 24px}
@@ -105,6 +109,7 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
     <a href="./" aria-current="page">1. 공모</a>
     <a data-tab="review" data-href="./vote/">2. 검토</a>
     <a data-tab="vote" data-href="./vote/ballot.html">3. 투표</a>
+    <a data-tab="result" data-href="./vote/result.html">4. 결과</a>
   </nav>
 
   <h1>crayon CUDP,<br>이 제품의 새 이름을 정해 주세요</h1>
@@ -119,7 +124,10 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
         <textarea id="f-why" rows="2" maxlength="200" required placeholder="이 이름에 담은 뜻을 한두 문장으로 적어 주세요"></textarea>
         <label for="f-who">제안자 이름 (선택, 목록에 표시되지 않습니다)</label>
         <input id="f-who" class="who-input" maxlength="30">
-        <button id="f-submit" class="primary" type="submit">제출하기</button>
+        <div class="submit-row">
+          <button id="f-submit" class="primary" type="submit">제출하기</button>
+          <p class="timer" role="timer"><span class="timer-label">금요일 오후 3시 마감</span> <b id="timer"></b></p>
+        </div>
       </form>
       <p id="closed" class="blocked" hidden>응모가 마감되었습니다. 다음 단계는 상표 검색과 전 직원 투표입니다.</p>
     </div>
@@ -146,7 +154,7 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
     <ol id="list"></ol>
   </section>
 </main>
-<script type="module" src="./nav.js"></script>
-<script type="module" src="./app.js?v=2"></script>
+<script type="module" src="./nav.js?v=3"></script>
+<script type="module" src="./app.js?v=3"></script>
 </body>
 </html>

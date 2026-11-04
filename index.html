@@ -71,13 +71,6 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes ping{0%{opacity:1}55%,100%{opacity:.4}}
 
-.rules{border:1px solid var(--line);background:var(--panel);padding:16px 20px;display:flex;flex-direction:column;gap:8px}
-.rules h2{font:500 13px/1.5 var(--sans);color:var(--muted)}
-.steps{display:flex;flex-direction:column;gap:4px}
-.steps li{display:flex;gap:10px;align-items:baseline}
-.steps .no{font:400 13px var(--mono);color:var(--muted)}
-.steps .now{color:var(--strong);font-weight:500}
-.steps .now .no{color:var(--accent)}
 .tag{display:inline-block;font-size:12px;color:var(--accent);border:1px solid var(--line2);border-radius:3px;padding:0 6px;line-height:1.6;font-weight:400}
 .tag.bad{color:var(--bad);border-color:var(--bad)}
 
@@ -141,15 +134,6 @@ textarea:focus,.who-input:focus{outline:0;border-color:var(--accent)}
         <div class="scope-center"><b id="scope-count">0</b><span>개의 이름</span></div>
       </div>
     </div>
-  </section>
-
-  <section class="rules">
-    <h2>진행 순서</h2>
-    <ol class="steps">
-      <li class="now"><span class="no">1</span>이름 응모 <span class="tag">지금</span></li>
-      <li><span class="no">2</span>상표 검색으로 후보 추리기</li>
-      <li><span class="no">3</span>전 직원 투표</li>
-    </ol>
   </section>
 
   <section class="board" aria-labelledby="board-title">

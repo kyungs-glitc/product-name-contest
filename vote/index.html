@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>crayon CUDP 새 이름 후보 검토 결과</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="wrap">
+  <nav class="pages" aria-label="페이지">
+    <a href="../">1. 공모</a>
+    <a href="./" aria-current="page">2. 검토</a>
+    <a data-tab="vote" data-href="./ballot.html">3. 투표</a>
+  </nav>
+
+  <h1>crayon CUDP,<br>새 이름 후보를 확인해 주세요</h1>
+
+  <p id="notice" class="notice" role="status" hidden></p>
+
+  <div id="content" class="stack">
+    <section class="board" aria-labelledby="final-title">
+      <h2 id="final-title">최종 후보</h2>
+      <ul id="finals"></ul>
+      <a id="go-vote" class="primary" href="./ballot.html" hidden>투표하러 가기</a>
+    </section>
+
+    <section class="board" aria-labelledby="review-title">
+      <h2 id="review-title">상표 검토 결과</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">이름</th><th scope="col">이름 의미</th><th scope="col">결과</th><th scope="col">사유</th></tr>
+          </thead>
+          <tbody id="reviews"></tbody>
+        </table>
+      </div>
+      <p class="note">사내 검토 결과이며, 실제 상표 등록 가능 여부를 보장하지 않습니다.</p>
+    </section>
+  </div>
+</main>
+<script type="module" src="../nav.js"></script>
+<script type="module" src="./review.js"></script>
+</body>
+</html>

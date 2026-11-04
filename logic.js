@@ -35,5 +35,13 @@ export function toEntries(rows) {
   });
 }
 
+// 투표 현황 CSV(직원 이름, 투표 여부) → 명단. 시트의 순서를 지킨다.
+export function toRoster(rows) {
+  return rows.slice(1).flatMap(r => {
+    const name = (r[0] ?? '').trim();
+    return name ? [{ name, voted: (r[1] ?? '').trim() === '투표 완료' }] : [];
+  });
+}
+
 // 설정 탭의 B1이 '예'이면 담당자가 수동으로 마감한 것이다.
 export const isClosedBySheet = rows => rows[0]?.[1]?.trim() === '예';

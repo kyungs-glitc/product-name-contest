@@ -1,7 +1,16 @@
 // 실행: node --test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalize, parseCsv, toEntries, isClosedBySheet } from './logic.js';
+import { normalize, parseCsv, toEntries, toRoster, isClosedBySheet } from './logic.js';
+
+test('투표 현황 → 명단: 머리글과 빈 행을 빼고 완료 여부를 읽음', () => {
+  const rows = parseCsv('"직원 이름","투표 여부"\n"직원 가","투표 완료"\n"직원 나",""\n"",""\n');
+  assert.deepEqual(toRoster(rows), [
+    { name: '직원 가', voted: true },
+    { name: '직원 나', voted: false },
+  ]);
+  assert.deepEqual(toRoster([]), []);
+});
 
 test('띄어쓰기·대소문자·기호만 다르면 같은 이름', () => {
   assert.equal(normalize('Sky-Guard A'), normalize('skyguard_a'));

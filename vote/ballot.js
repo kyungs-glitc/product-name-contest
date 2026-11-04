@@ -1,5 +1,5 @@
-import { parseCsv, toRoster } from '../logic.js';
-import { VOTE_OPEN, finalists as CANDIDATES } from './candidates.js';
+import { parseCsv, toRoster } from '../logic.js?v=3';
+import { VOTE_OPEN, finalists as CANDIDATES } from './candidates.js?v=3';
 
 const DEADLINE = null; // 예: new Date('2026-11-13T18:00:00+09:00'). 구글 폼의 응답 종료일과 같아야 한다
 

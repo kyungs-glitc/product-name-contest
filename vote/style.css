@@ -89,3 +89,18 @@ td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:t
 .result.hold{color:var(--warn);border-color:var(--warn)}
 .result.fail{color:var(--bad);border-color:var(--bad)}
 .note{font-size:13px}
+
+.verdict{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:20px 24px;background:rgba(63,191,120,.12);border:1px solid var(--ok);border-radius:4px}
+.verdict.tied{background:rgba(233,180,25,.1);border-color:var(--warn)}
+.verdict-label{font-size:14px;color:var(--text)}
+.verdict-name{font-size:clamp(28px,4.4vw,40px);line-height:1.25;font-weight:700;color:var(--strong);overflow-wrap:anywhere;word-break:normal}
+.verdict .primary{margin-top:8px}
+.round{display:flex;flex-direction:column;gap:8px}
+.round h3{margin:0;font-size:16px;font-weight:700;color:var(--strong)}
+.round-table{min-width:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.round-table th:first-child,.round-table td:first-child{width:56px}
+.round-table th:last-child,.round-table td:last-child{width:72px;text-align:right;padding-right:0}
+tr.lead td{color:var(--strong)}
+.tag.tie{color:var(--warn);border-color:var(--warn)}
+.tag.win{color:var(--ok);border-color:var(--ok)}

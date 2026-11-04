@@ -1,4 +1,4 @@
-import { REVIEW_OPEN, VOTE_OPEN, REVIEWS, finalists } from './candidates.js';
+import { REVIEW_OPEN, VOTE_OPEN, REVIEWS, finalists } from './candidates.js?v=3';
 
 const $ = id => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -24,7 +24,7 @@ if (!REVIEW_OPEN) {
   $('reviews').replaceChildren(...REVIEWS.map(r => {
     const tr = el('tr');
     const name = el('td', 'name-cell', r.name);
-    if (r.finalist) name.append(' ', el('span', 'tag', '최종 후보'));
+    if (r.finalist) name.append(' ', el('span', 'tag', '투표 후보'));
     const result = el('td');
     result.append(el('span', `result ${RESULT_CLASS[r.result] ?? ''}`, r.result));
     tr.append(name, el('td', '', r.why), result, el('td', '', r.note));

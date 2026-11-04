@@ -45,3 +45,21 @@ export function toRoster(rows) {
 
 // 설정 탭의 B1이 '예'이면 담당자가 수동으로 마감한 것이다.
 export const isClosedBySheet = rows => rows[0]?.[1]?.trim() === '예';
+
+// 남은 시간(ms) → '1일 2시간 3분 4초'. 앞쪽의 0 단위는 생략한다.
+export function remainingText(ms) {
+  const total = Math.max(0, Math.ceil(ms / 1000));
+  const d = Math.floor(total / 86400), h = Math.floor(total / 3600) % 24, m = Math.floor(total / 60) % 60, s = total % 60;
+  if (d) return `${d}일 ${h}시간 ${m}분 ${s}초`;
+  if (h) return `${h}시간 ${m}분 ${s}초`;
+  if (m) return `${m}분 ${s}초`;
+  return `${s}초`;
+}
+
+// 한 회차 득표 → 득표순 순위. 같은 표는 같은 순위. 1위가 둘 이상이면 동률이다.
+export function rankRound(results) {
+  const sorted = [...results].sort((a, b) => b.votes - a.votes);
+  const rows = sorted.map(r => ({ ...r, rank: sorted.findIndex(x => x.votes === r.votes) + 1 }));
+  const leaders = rows.filter(r => r.rank === 1).map(r => r.name);
+  return { rows, leaders, tied: leaders.length > 1 };
+}

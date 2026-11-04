@@ -1,7 +1,7 @@
 // 실행: node --test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalize, parseCsv, toEntries, toRoster, isClosedBySheet } from './logic.js';
+import { normalize, parseCsv, toEntries, toRoster, isClosedBySheet, remainingText, rankRound } from './logic.js';
 
 test('투표 현황 → 명단: 머리글과 빈 행을 빼고 완료 여부를 읽음', () => {
   const rows = parseCsv('"직원 이름","투표 여부"\n"직원 가","투표 완료"\n"직원 나",""\n"",""\n');
@@ -54,4 +54,22 @@ test('수동 마감: B1이 예일 때만', () => {
   assert.equal(isClosedBySheet([['마감 여부', ' 예 ']]), true);
   assert.equal(isClosedBySheet([['마감 여부', '아니오']]), false);
   assert.equal(isClosedBySheet([]), false);
+});
+
+test('남은 시간: 앞쪽 0 단위를 빼고, 지나면 0초', () => {
+  assert.equal(remainingText((86400 + 7200 + 180 + 4) * 1000), '1일 2시간 3분 4초');
+  assert.equal(remainingText(3600 * 1000), '1시간 0분 0초');
+  assert.equal(remainingText(65 * 1000), '1분 5초');
+  assert.equal(remainingText(500), '1초');
+  assert.equal(remainingText(-1000), '0초');
+});
+
+test('회차 순위: 동률이면 같은 순위, 1위가 둘이면 tied', () => {
+  const tie = rankRound([{ name: 'A', votes: 3 }, { name: 'B', votes: 9 }, { name: 'C', votes: 9 }]);
+  assert.deepEqual(tie.rows.map(r => [r.name, r.rank]), [['B', 1], ['C', 1], ['A', 3]]);
+  assert.deepEqual(tie.leaders, ['B', 'C']);
+  assert.equal(tie.tied, true);
+  const win = rankRound([{ name: 'A', votes: 12 }, { name: 'B', votes: 10 }]);
+  assert.deepEqual(win.leaders, ['A']);
+  assert.equal(win.tied, false);
 });

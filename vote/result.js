@@ -10,7 +10,7 @@ const el = (tag, cls, text) => {
   if (text !== undefined) n.textContent = text;
   return n;
 };
-const ranked = ROUNDS.map(r => ({ ...r, ...rankRound(r.results) }));
+const ranked = ROUNDS.map((r, i) => ({ ...r, ...rankRound(r.results), no: i + 1 }));
 const last = ranked[ranked.length - 1];
 
 // 최근 회차가 위로
@@ -25,7 +25,7 @@ $('rounds').replaceChildren(...[...ranked].reverse().map((r, i) => {
   thead.append(hr);
   const tbody = el('tbody');
   r.rows.forEach(row => {
-    const lead = row.rank === 1;
+    const lead = row.rank === 1 && r.no > 1; // 1차는 순위만 보여 주고 1위 강조, 동률, 선정 표시를 하지 않는다
     const tr = el('tr', lead ? 'lead' : '');
     const name = el('td', 'name-cell', row.name);
     if (lead && r.tied) name.append(' ', el('span', 'tag tie', '동률'));
@@ -42,6 +42,7 @@ $('rounds').replaceChildren(...[...ranked].reverse().map((r, i) => {
 function renderVerdict(settings) {
   const verdict = $('verdict');
   verdict.className = 'verdict';
+  verdict.hidden = false;
   verdict.replaceChildren();
   const posted = ranked.length >= settings.round;
   if (settings.stage === '투표' && settings.round > ranked.length) {
@@ -56,6 +57,8 @@ function renderVerdict(settings) {
   } else if (!posted) {
     verdict.classList.add('tied');
     verdict.append(el('span', 'verdict-label', `${settings.round}차 투표를 집계하고 있습니다`));
+  } else if (last.no === 1) {
+    verdict.hidden = true; // 1차는 아래 순위표만 보여 준다
   } else if (last.tied) {
     verdict.classList.add('tied');
     verdict.append(

@@ -168,6 +168,6 @@ export const REVIEWS = [
 
 export const finalists = REVIEWS.filter(r => r.finalist);
 
-// 회차별 득표. 담당자 검수를 마친 숫자만 넣는다. 마지막 회차의 1위가 하나면 확정, 둘 이상이면 재투표다.
+// 회차별 득표. 담당자 검수를 마친 숫자만 넣는다. 1차는 순위표만 보여 준다. 2차부터는 마지막 회차의 1위가 하나면 확정, 둘 이상이면 재투표다.
 // { title, method, voters, results: [{ name, votes }] }
 export const ROUNDS = [];

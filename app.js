@@ -1,5 +1,5 @@
-import { normalize, parseCsv, toEntries, remainingText } from './logic.js?v=5';
-import { readSettings, applyTabs } from './site.js?v=5';
+import { normalize, parseCsv, toEntries, remainingText } from './logic.js?v=6';
+import { readSettings, applyTabs } from './site.js?v=6';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScrlWmUM1ZKDFdGTg7XmzUHIqunk4-maDLF785r5-6hqzXPIQ/formResponse';
 // who는 시트에만 남기고 화면에는 표시하지 않는다.

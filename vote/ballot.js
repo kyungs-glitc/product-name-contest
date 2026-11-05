@@ -1,6 +1,6 @@
-import { parseCsv, toRoster, stageReached, roundCandidates, requiredPicks, allVoted } from '../logic.js?v=5';
-import { readSettings, applyTabs } from '../site.js?v=5';
-import { finalists, ROUNDS } from './candidates.js?v=5';
+import { parseCsv, toRoster, stageReached, roundCandidates, requiredPicks, allVoted } from '../logic.js?v=6';
+import { readSettings, applyTabs } from '../site.js?v=6';
+import { finalists, ROUNDS } from './candidates.js?v=6';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfdbIeRtS_T6rCsCfom0NxlhWYU9l2o6MwTG6AKbOycAZl8Ew/formResponse';
 // 세 칸 모두 단답형이다. 고른 이름은 ' | '로 이어 한 칸에 보내므로 후보가 바뀌어도 폼을 고칠 필요가 없다.

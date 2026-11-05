@@ -1,6 +1,6 @@
 // 네 페이지가 함께 쓰는 사이트 상태. 응답 시트의 설정 탭이 유일한 원본이다.
 // B1 마감 여부(예/아니오), B2 연장 시간(예: 2시간), B3 단계(공모, 검토, 투표 2차, 결과 2차).
-import { parseCsv, parseSettings, stageReached } from './logic.js?v=5';
+import { parseCsv, parseSettings, stageReached } from './logic.js?v=6';
 
 const SHEET_ID = '1xhNUG1WI_LKoT8WZmwP66g3z_U-er4KTHw45KideVC8';
 const SETTINGS_GID = '1532990872';

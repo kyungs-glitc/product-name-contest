@@ -1,6 +1,6 @@
-import { rankRound, stageReached, MAX_ROUNDS } from '../logic.js?v=5';
-import { readSettings, applyTabs } from '../site.js?v=5';
-import { ROUNDS } from './candidates.js?v=5';
+import { rankRound, stageReached, MAX_ROUNDS } from '../logic.js?v=6';
+import { readSettings, applyTabs } from '../site.js?v=6';
+import { ROUNDS } from './candidates.js?v=6';
 
 const POLL_MS = 60_000;
 const $ = id => document.getElementById(id);

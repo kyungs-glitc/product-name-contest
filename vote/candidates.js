@@ -11,34 +11,6 @@ export const REVIEWS = [
     "finalist": true
   },
   {
-    "name": "LOCK DOWN",
-    "why": "대드론 솔루션으로 다 떨구자 라는 의미를 가지고 있으며\n스타크래프트의 고스트의 락다운 기술(유닛 정지)에서 가져왔음",
-    "result": "통과",
-    "note": "해외 같은 이름 15건: 미국 6, EU 2, 영국 2 등",
-    "finalist": true
-  },
-  {
-    "name": "PORTUS(포르투스)",
-    "why": "모든 센서가 들어오는 하나의 관문.\n라틴어로 항구. 영어 port의 뿌리이고, 로마 신 포르투누스의 이름도 여기서 나왔습니다.",
-    "result": "통과",
-    "note": "해외 같은 이름 6건: EU, 영국, 미국, 일본, WIPO",
-    "finalist": true
-  },
-  {
-    "name": "스카이퓨전AI (SkyFusionAI)",
-    "why": "레이더, RF, 영상 센서의 탐지 정보를 융합해 하나의 공중 상황도를 만든다는 의미입니다.",
-    "result": "통과",
-    "note": "해외 같은 이름: 인도 2건",
-    "finalist": true
-  },
-  {
-    "name": "VERAO(베라오)",
-    "why": "받침 없이 부드럽게 이어져 부르기 편함",
-    "result": "통과",
-    "note": "해외 같은 이름: 브라질 1건",
-    "finalist": true
-  },
-  {
     "name": "베일리스 AI (Veylith AI)",
     "why": "Veil에서 착안한 조어. 레이더·RF·영상에 흩어진 단서를 연결해 베일 뒤에 숨은 드론 위협을 드러낸다는 의미입니다.",
     "result": "통과",
@@ -72,6 +44,34 @@ export const REVIEWS = [
     "result": "통과",
     "note": "유사 상표 없음",
     "finalist": true
+  },
+  {
+    "name": "LOCK DOWN",
+    "why": "대드론 솔루션으로 다 떨구자 라는 의미를 가지고 있으며\n스타크래프트의 고스트의 락다운 기술(유닛 정지)에서 가져왔음",
+    "result": "보류",
+    "note": "해외 같은 이름 15건: 미국 6, EU 2, 영국 2 등",
+    "finalist": false
+  },
+  {
+    "name": "PORTUS(포르투스)",
+    "why": "모든 센서가 들어오는 하나의 관문.\n라틴어로 항구. 영어 port의 뿌리이고, 로마 신 포르투누스의 이름도 여기서 나왔습니다.",
+    "result": "보류",
+    "note": "해외 같은 이름 6건: EU, 영국, 미국, 일본, WIPO",
+    "finalist": false
+  },
+  {
+    "name": "스카이퓨전AI (SkyFusionAI)",
+    "why": "레이더, RF, 영상 센서의 탐지 정보를 융합해 하나의 공중 상황도를 만든다는 의미입니다.",
+    "result": "보류",
+    "note": "해외 같은 이름: 인도 2건",
+    "finalist": false
+  },
+  {
+    "name": "VERAO(베라오)",
+    "why": "받침 없이 부드럽게 이어져 부르기 편함",
+    "result": "보류",
+    "note": "해외 같은 이름: 브라질 1건",
+    "finalist": false
   },
   {
     "name": "Retiaer (레티아에르)",

@@ -1,6 +1,6 @@
-import { parseCsv, toRoster, stageReached, roundCandidates, minPicks, allVoted } from '../logic.js?v=4';
-import { readSettings, applyTabs } from '../site.js?v=4';
-import { finalists, ROUNDS } from './candidates.js?v=4';
+import { parseCsv, toRoster, stageReached, roundCandidates, requiredPicks, allVoted } from '../logic.js?v=5';
+import { readSettings, applyTabs } from '../site.js?v=5';
+import { finalists, ROUNDS } from './candidates.js?v=5';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfdbIeRtS_T6rCsCfom0NxlhWYU9l2o6MwTG6AKbOycAZl8Ew/formResponse';
 // 세 칸 모두 단답형이다. 고른 이름은 ' | '로 이어 한 칸에 보내므로 후보가 바뀌어도 폼을 고칠 필요가 없다.
@@ -11,7 +11,7 @@ const STATUS_GID = '1855686233';
 const POLL_MS = 60_000;
 
 const $ = id => document.getElementById(id);
-let roster = [], loaded = false, justVoted = '', settings = null, builtRound = 0, votedRound = 0, minPick = 2;
+let roster = [], loaded = false, justVoted = '', settings = null, builtRound = 0, votedRound = 0, picks = 3;
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -30,7 +30,14 @@ function showNotice(text) {
 }
 
 const pickedBoxes = () => [...document.querySelectorAll('input[name="choice"]:checked')];
-const syncPicks = () => { $('picked').textContent = `${pickedBoxes().length}개 선택`; };
+const syncPicks = () => {
+  const count = pickedBoxes().length;
+  $('picked').textContent = `${count} / ${picks}개 선택`;
+  // 고를 개수를 채우면 나머지 체크박스를 잠근다. 재투표의 라디오는 눌러서 바꿀 수 있어 잠그지 않는다.
+  document.querySelectorAll('input[name="choice"][type="checkbox"]').forEach(box => {
+    box.disabled = !box.checked && count >= picks;
+  });
+};
 $('choices').addEventListener('change', syncPicks);
 
 // 회차가 바뀔 때만 카드를 다시 만든다. 주기적으로 읽을 때 체크가 풀리면 안 된다.
@@ -38,9 +45,9 @@ function buildChoices(round) {
   if (builtRound === round) return;
   builtRound = round;
   const candidates = roundCandidates(round, finalists, ROUNDS);
-  minPick = minPicks(round, candidates.length);
+  picks = requiredPicks(round, candidates.length);
   $('pick-legend').textContent = round === 1
-    ? `마음에 드는 이름을 ${minPick}개 이상 체크해 주세요`
+    ? `마음에 드는 이름을 ${picks}개 골라 주세요`
     : `${round}차 재투표: 동률 후보 중 1개만 골라 주세요`;
   $('choices').replaceChildren(...candidates.map((c, i) => {
     const label = el('label', 'choice');
@@ -142,7 +149,7 @@ $('form').addEventListener('submit', async e => {
   const chosen = pickedBoxes().map(box => box.value);
   const voter = $('f-voter').value;
   if (!voter) return setStatus('warn', '내 이름을 골라 주세요.');
-  if (chosen.length < minPick) return setStatus('warn', $('pick-legend').textContent + '.');
+  if (chosen.length !== picks) return setStatus('warn', $('pick-legend').textContent + '.');
   const btn = $('f-submit');
   btn.disabled = true;
   setStatus('', '투표하는 중입니다.');

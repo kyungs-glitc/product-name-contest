@@ -87,8 +87,8 @@ export function roundCandidates(round, finalists, rounds) {
   return finalists.filter(f => leaders.includes(f.name));
 }
 
-// 1차는 2개 이상 복수 선택, 재투표는 1인 1표. 후보가 2개보다 적으면 있는 만큼만 요구한다.
-export const minPicks = (round, candidateCount) => (round === 1 ? Math.min(2, candidateCount) : 1);
+// 1차는 3개를 고르고, 재투표는 1인 1표. 후보가 3개보다 적으면 있는 만큼만 고른다.
+export const requiredPicks = (round, candidateCount) => (round === 1 ? Math.min(3, candidateCount) : 1);
 
 // 명단을 아직 못 읽었으면 전원 완료가 아니다.
 export const allVoted = roster => roster.length > 0 && roster.every(p => p.voted);

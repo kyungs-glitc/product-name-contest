@@ -31,6 +31,7 @@ label[for]{display:block;font-size:14px;font-weight:500;margin-bottom:8px}
 .choice{position:relative;display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px 16px;cursor:pointer}
 .choice:hover{border-color:var(--line2)}
 .choice:has(input:checked){border-color:var(--accent);background:#0E1A3A}
+.choice:has(input:disabled){opacity:.45;cursor:not-allowed}
 .choice input{position:absolute;opacity:0;width:1px;height:1px}
 .check{flex:none;width:22px;height:22px;margin-top:3px;border:2px solid var(--line2);border-radius:4px;display:grid;place-items:center}
 .check::after{content:"✓";font-size:15px;line-height:1;font-weight:700;color:var(--bg);opacity:0}

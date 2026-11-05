@@ -1,7 +1,7 @@
 // 실행: node --test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalize, parseCsv, toEntries, toRoster, remainingText, rankRound, parseSettings, stageReached, roundCandidates, minPicks, allVoted } from './logic.js';
+import { normalize, parseCsv, toEntries, toRoster, remainingText, rankRound, parseSettings, stageReached, roundCandidates, requiredPicks, allVoted } from './logic.js';
 
 test('투표 현황 → 명단: 머리글과 빈 행을 빼고 완료 여부를 읽음', () => {
   const rows = parseCsv('"직원 이름","투표 여부"\n"직원 가","투표 완료"\n"직원 나",""\n"",""\n');
@@ -90,11 +90,12 @@ test('회차 후보: 1차는 전체, 재투표는 직전 회차의 동률 후보
   assert.deepEqual(roundCandidates(3, f, r), []);
 });
 
-test('최소 선택 수: 1차는 2개, 재투표는 1개, 후보가 하나뿐이면 1개', () => {
-  assert.equal(minPicks(1, 4), 2);
-  assert.equal(minPicks(1, 1), 1);
-  assert.equal(minPicks(2, 2), 1);
-  assert.equal(minPicks(3, 3), 1);
+test('고를 개수: 1차는 3개, 재투표는 1개, 후보가 3개보다 적으면 있는 만큼', () => {
+  assert.equal(requiredPicks(1, 10), 3);
+  assert.equal(requiredPicks(1, 2), 2);
+  assert.equal(requiredPicks(1, 1), 1);
+  assert.equal(requiredPicks(2, 2), 1);
+  assert.equal(requiredPicks(3, 3), 1);
 });
 
 test('전원 투표 완료: 한 명이라도 남았거나 명단이 비어 있으면 아님', () => {

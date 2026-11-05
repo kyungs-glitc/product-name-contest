@@ -1,12 +1,14 @@
-import { normalize, parseCsv, toEntries, isClosedBySheet, remainingText } from './logic.js?v=3';
+import { normalize, parseCsv, toEntries, remainingText } from './logic.js?v=4';
+import { readSettings, applyTabs } from './site.js?v=4';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScrlWmUM1ZKDFdGTg7XmzUHIqunk4-maDLF785r5-6hqzXPIQ/formResponse';
 // who는 시트에만 남기고 화면에는 표시하지 않는다.
 const FIELDS = { name: 'entry.69007877', why: 'entry.971116462', who: 'entry.1176835550' };
 // 응답 시트. 링크 권한은 뷰어다. 편집 권한을 열면 이 주소를 아는 누구나 응답을 고칠 수 있다.
 const SHEET_ID = '1xhNUG1WI_LKoT8WZmwP66g3z_U-er4KTHw45KideVC8';
-const RESPONSES_GID = '1290317035', SETTINGS_GID = '1532990872';
-const DEADLINE = new Date('2026-11-06T15:00:00+09:00'); // 구글 폼의 응답 종료일과 같아야 한다
+const RESPONSES_GID = '1290317035';
+// 기본 마감. 실제 마감은 여기에 설정 탭의 연장 시간을 더한 값이다. 구글 폼 종료일은 연장을 고려해 더 늦게 둔다.
+const BASE_DEADLINE = new Date('2026-11-06T15:00:00+09:00').getTime();
 
 const POLL_MS = 60_000;
 // 제출 후 이 시간이 지나도 시트에 나타나지 않으면 접수되지 않은 것으로 안내한다.
@@ -14,7 +16,10 @@ const PENDING_LIMIT_MS = 10 * 60_000;
 const SWEEP_SECONDS = 6; // CSS의 spin·ping 주기와 같아야 한다
 
 const $ = id => document.getElementById(id);
-let entries = [], pending = [], closedBySheet = false, loaded = false;
+let entries = [], pending = [], loaded = false;
+let site = { closed: false, extendHours: 0, stage: '공모', round: 1 };
+const deadline = () => BASE_DEADLINE + site.extendHours * 3_600_000;
+const fmtDeadline = t => new Date(t).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric', weekday: 'short', hour: 'numeric', minute: '2-digit' });
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -66,9 +71,12 @@ function render() {
   $('list').replaceChildren(...all.map(row).reverse()); // 새 이름이 위로, 번호는 올라온 순서
   $('list-note').hidden = all.length > 0;
   if (!all.length && loaded) $('list-note').textContent = '아직 올라온 이름이 없습니다. 첫 번째 이름을 올려 주세요.';
-  const closed = closedBySheet || Date.now() >= DEADLINE.getTime();
+  const closed = site.closed || site.stage !== '공모' || Date.now() >= deadline();
   $('form').hidden = closed;
   $('closed').hidden = !closed;
+  $('closed').textContent = site.stage === '공모'
+    ? "상표 검토 진행 중입니다.\n검토 완료 후 상단의 '검토'와 투표 탭이 활성화 됩니다."
+    : '공모가 마감되었습니다. 다음 단계는 위의 탭에서 확인해 주세요.';
 }
 
 // ponytail: gviz는 한 열의 값을 다수 자료형으로 맞춘다. 글자 이름 사이의 숫자만 있는 이름은 빈칸으로 올 수 있다(시트에는 남는다).
@@ -80,9 +88,10 @@ async function readCsv(gid, headers) {
 }
 async function load() {
   try {
-    const [responses, settings] = await Promise.all([readCsv(RESPONSES_GID, 1), readCsv(SETTINGS_GID, 0)]);
+    const [responses, settings] = await Promise.all([readCsv(RESPONSES_GID, 1), readSettings()]);
     entries = toEntries(responses);
-    closedBySheet = isClosedBySheet(settings);
+    site = settings;
+    applyTabs(site);
     pending = pending.filter(p => !entries.some(e => normalize(e.name) === normalize(p.name)));
     loaded = true;
   } catch {
@@ -131,12 +140,13 @@ $('form').addEventListener('submit', async e => {
 
 // 마감까지 남은 시간을 1초마다 고치고, 시각이 되면 입력칸을 닫는다.
 function tick() {
-  const left = DEADLINE.getTime() - Date.now();
-  const timer = $('timer');
-  if (timer) timer.textContent = remainingText(left) + ' 남음'; // 캐시된 옛 화면에는 타이머 칸이 없다
-  if (left <= 0) { clearInterval(timerId); render(); }
+  const left = deadline() - Date.now();
+  const timer = $('timer'), label = $('timer-label'); // 캐시된 옛 화면에는 이 칸이 없다
+  if (timer) timer.textContent = remainingText(left) + ' 남음';
+  if (label) label.textContent = `${fmtDeadline(deadline())} 마감`;
+  if (left <= 0 && !$('form').hidden) render();
 }
-const timerId = setInterval(tick, 1000);
+setInterval(tick, 1000);
 tick();
 
 load();

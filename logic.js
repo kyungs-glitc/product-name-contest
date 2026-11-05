@@ -43,9 +43,6 @@ export function toRoster(rows) {
   });
 }
 
-// 설정 탭의 B1이 '예'이면 담당자가 수동으로 마감한 것이다.
-export const isClosedBySheet = rows => rows[0]?.[1]?.trim() === '예';
-
 // 남은 시간(ms) → '1일 2시간 3분 4초'. 앞쪽의 0 단위는 생략한다.
 export function remainingText(ms) {
   const total = Math.max(0, Math.ceil(ms / 1000));
@@ -63,3 +60,35 @@ export function rankRound(results) {
   const leaders = rows.filter(r => r.rank === 1).map(r => r.name);
   return { rows, leaders, tied: leaders.length > 1 };
 }
+
+// 진행 단계. 재투표까지 포함해 3회까지 투표한다.
+export const STAGES = ['공모', '검토', '투표', '결과'];
+export const MAX_ROUNDS = 3;
+export const stageReached = (current, target) => STAGES.indexOf(current) >= STAGES.indexOf(target);
+
+// 설정 탭 → 사이트 상태. 칸이 비었거나 형식이 틀리면 공모 단계의 기본값으로 읽는다.
+export function parseSettings(rows) {
+  const cell = i => (rows[i]?.[1] ?? '').trim();
+  const match = cell(2).match(/^(공모|검토|투표|결과)(?:\s*(\d+)차)?$/);
+  return {
+    closed: cell(0) === '예',
+    extendHours: parseInt(cell(1), 10) || 0,
+    stage: match ? match[1] : '공모',
+    round: match && match[2] ? Number(match[2]) : 1,
+  };
+}
+
+// 1차는 투표 후보 전체, 재투표는 직전 회차의 1위 동률 후보만 올린다.
+export function roundCandidates(round, finalists, rounds) {
+  if (round <= 1) return finalists;
+  const previous = rounds[round - 2];
+  if (!previous) return [];
+  const leaders = rankRound(previous.results).leaders;
+  return finalists.filter(f => leaders.includes(f.name));
+}
+
+// 1차는 2개 이상 복수 선택, 재투표는 1인 1표. 후보가 2개보다 적으면 있는 만큼만 요구한다.
+export const minPicks = (round, candidateCount) => (round === 1 ? Math.min(2, candidateCount) : 1);
+
+// 명단을 아직 못 읽었으면 전원 완료가 아니다.
+export const allVoted = roster => roster.length > 0 && roster.every(p => p.voted);

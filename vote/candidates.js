@@ -170,4 +170,27 @@ export const finalists = REVIEWS.filter(r => r.finalist);
 
 // 회차별 득표. 담당자 검수를 마친 숫자만 넣는다. 1차는 순위표만 보여 준다. 2차부터는 마지막 회차의 1위가 하나면 확정, 둘 이상이면 재투표다.
 // { title, method, voters, results: [{ name, votes }] }
-export const ROUNDS = [];
+export const ROUNDS = [
+  {
+    title: '1차 투표',
+    method: '3개 선택',
+    voters: 15,
+    results: [
+      { name: 'SKYNTRA C2 (스카이앤트라)', votes: 9 },
+      { name: 'DEFENROK C2', votes: 8 },
+      { name: '베일리스 AI (Veylith AI)', votes: 7 },
+      { name: '디킬 하이드', votes: 4 },
+      { name: 'TRACENTRA C2 (트라센트라)', votes: 4 },
+      { name: '에어실드 커맨드 (AirShield Command)', votes: 3 },
+      { name: 'SCUTAVEN (스쿠타벤)', votes: 2 },
+      { name: 'PORTUS(포르투스)', votes: 2 },
+      { name: '에어센티널 (AirSentinel)', votes: 2 },
+      { name: 'LOCK DOWN', votes: 1 },
+      { name: '스카이퓨전AI (SkyFusionAI)', votes: 1 },
+      { name: 'VERAO(베라오)', votes: 1 },
+      { name: 'Retiaer (레티아에르)', votes: 1 },
+      { name: 'Overmind(오버마인드)', votes: 0 },
+      { name: 'D-Fend(디펜드)', votes: 0 },
+    ],
+  },
+];

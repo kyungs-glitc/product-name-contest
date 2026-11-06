@@ -1,7 +1,7 @@
 // 검토, 투표, 결과 페이지가 함께 쓰는 자료. 어느 페이지가 열리는지는 응답 시트의 설정 탭이 정한다(site.js).
 
 // { name, why, result: '통과' | '보류' | '탈락', note, finalist: 투표 후보인지 }
-// note는 공개되므로 상표 권리자 이름을 넣지 않는다. 2026-11-05 최종 검토 결과다.
+// note는 공개되므로 상표 권리자 이름을 넣지 않는다. 2026-11-05 최종 검토 결과다. 보류도 2026-11-06 담당자 결정으로 투표 후보에 넣었다(SkyWarden 제외).
 export const REVIEWS = [
   {
     "name": "디킬 하이드",
@@ -50,35 +50,35 @@ export const REVIEWS = [
     "why": "대드론 솔루션으로 다 떨구자 라는 의미를 가지고 있으며\n스타크래프트의 고스트의 락다운 기술(유닛 정지)에서 가져왔음",
     "result": "보류",
     "note": "해외 같은 이름 15건: 미국 6, EU 2, 영국 2 등",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "PORTUS(포르투스)",
     "why": "모든 센서가 들어오는 하나의 관문.\n라틴어로 항구. 영어 port의 뿌리이고, 로마 신 포르투누스의 이름도 여기서 나왔습니다.",
     "result": "보류",
     "note": "해외 같은 이름 6건: EU, 영국, 미국, 일본, WIPO",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "스카이퓨전AI (SkyFusionAI)",
     "why": "레이더, RF, 영상 센서의 탐지 정보를 융합해 하나의 공중 상황도를 만든다는 의미입니다.",
     "result": "보류",
     "note": "해외 같은 이름: 인도 2건",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "VERAO(베라오)",
     "why": "받침 없이 부드럽게 이어져 부르기 편함",
     "result": "보류",
     "note": "해외 같은 이름: 브라질 1건",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "Retiaer (레티아에르)",
     "why": "그물(Rete)과 공중(Aer)을 합성한 말로 거미줄처럼 촘촘하고 빈틈없는 공중 탐지망을 뜻함",
     "result": "보류",
     "note": "국내 제9류에 비슷한 이름 등록",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "스카이워든 (SkyWarden)",
@@ -92,28 +92,28 @@ export const REVIEWS = [
     "why": "초월체(Overmind)는 스타크래프트 세계관에서 저그 군단 전체를 하나로 묶고 통제하는 '중앙 집권형 지휘 두뇌이자 단일 의식 그 자체'입니다.\n\n군사 통제 시스템 관점에서 보면, 저그라는 거대한 분산 네트워크의 최상위 중앙 서버이자 C2(지휘통제) 코어 역할을 수행합니다.",
     "result": "보류",
     "note": "국내 제9류에 비슷한 이름 등록",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "에어센티널 (AirSentinel)",
     "why": "공중 위협을 먼저 발견하는 초병. 드론을 조기에 탐지하고 경보를 전달하는 역할을 강조합니다.",
     "result": "보류",
     "note": "국내 제9류에 핵심어가 같은 이름 등록",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "에어실드 커맨드 (AirShield Command)",
     "why": "공중 위협으로부터 시설을 보호하는 지휘본부. 위협 판단부터 대응 지시까지 중앙에서 통제한다는 의미입니다.",
     "result": "보류",
     "note": "국내 제9·42류에 비슷한 이름 등록",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "D-Fend(디펜드)",
     "why": "Drone(드론)을 막아낸다(Fend off)는 의미를 담고 있습니다.",
     "result": "보류",
     "note": "국내 제9류에 비슷한 이름 출원",
-    "finalist": false
+    "finalist": true
   },
   {
     "name": "AEGIS(이지스,아이기스)",

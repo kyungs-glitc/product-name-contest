@@ -1,6 +1,6 @@
-import { parseCsv, toRoster, stageReached, roundCandidates, requiredPicks, allVoted } from '../logic.js?v=6';
+import { parseCsv, toRoster, stageReached, roundCandidates, requiredPicks } from '../logic.js?v=6';
 import { readSettings, applyTabs } from '../site.js?v=6';
-import { finalists, ROUNDS } from './candidates.js?v=6';
+import { finalists, ROUNDS } from './candidates.js?v=8';
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfdbIeRtS_T6rCsCfom0NxlhWYU9l2o6MwTG6AKbOycAZl8Ew/formResponse';
 // 세 칸 모두 단답형이다. 고른 이름은 ' | '로 이어 한 칸에 보내므로 후보가 바뀌어도 폼을 고칠 필요가 없다.
@@ -68,13 +68,13 @@ function renderVoters() {
   const select = $('f-voter'), current = select.value;
   const placeholder = el('option', '', loaded ? '내 이름을 고르세요' : '명단을 불러오는 중입니다');
   placeholder.value = '';
-  // 이미 투표한 이름은 목록에서 뺀다. 잘못 눌렸으면 담당자가 시트에서 정리한다.
-  select.replaceChildren(placeholder, ...roster.filter(p => !p.voted).map(p => {
-    const opt = el('option', '', p.name);
+  // 이미 투표한 이름도 남긴다. 다시 내면 사람별 마지막 투표만 집계한다(투표 시트의 '최종 투표' 탭).
+  select.replaceChildren(placeholder, ...roster.map(p => {
+    const opt = el('option', '', p.voted ? `${p.name} (투표 완료)` : p.name);
     opt.value = p.name;
     return opt;
   }));
-  if (roster.some(p => p.name === current && !p.voted)) select.value = current;
+  if (roster.some(p => p.name === current)) select.value = current;
 }
 function renderStatus() {
   const done = roster.filter(p => p.voted).length;
@@ -94,9 +94,8 @@ function applyState() {
   document.querySelector('.board').hidden = !started;
   if (stage === '투표') {
     buildChoices(round);
-    if (allVoted(roster)) {
-      showNotice('모든 인원이 투표를 마쳐 투표가 마감되었습니다. 담당자가 확인한 뒤 결과 탭에 표시됩니다.');
-    } else if (votedRound !== round) {
+    // 전원이 투표해도 닫지 않는다. 다시 투표할 수 있어야 하므로 마감은 담당자 요청으로만 한다.
+    if (votedRound !== round) {
       justVoted = '';
       $('form').hidden = false;
       $('notice').hidden = true;
@@ -141,7 +140,6 @@ async function load() {
   }
   renderVoters();
   renderStatus();
-  applyState(); // 명단을 읽은 뒤에야 전원 완료를 알 수 있다
 }
 
 $('form').addEventListener('submit', async e => {
@@ -160,7 +158,8 @@ $('form').addEventListener('submit', async e => {
     justVoted = voter;
     votedRound = settings.round;
     setStatus('', '');
-    showNotice(`${chosen.map(n => `'${n}'`).join(', ')}에 투표했습니다. 잠시 후 아래 현황에 완료로 표시됩니다.`);
+    const revote = roster.some(p => p.name === voter && p.voted);
+    showNotice(`${chosen.map(n => `'${n}'`).join(', ')}에 투표했습니다. ${revote ? '이전 투표는 이 투표로 바뀝니다' : '잠시 후 아래 현황에 완료로 표시됩니다'}. 마음이 바뀌면 새로고침한 뒤 다시 투표할 수 있습니다.`);
     renderStatus();
     setTimeout(load, 3000);
   } catch {

@@ -1,6 +1,6 @@
 import { stageReached } from '../logic.js?v=6';
 import { readSettings, applyTabs } from '../site.js?v=6';
-import { REVIEWS, finalists } from './candidates.js?v=6';
+import { REVIEWS, finalists } from './candidates.js?v=8';
 
 const POLL_MS = 60_000;
 const $ = id => document.getElementById(id);

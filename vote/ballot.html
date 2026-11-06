@@ -24,8 +24,9 @@
   <form id="form" autocomplete="off">
     <div class="voter">
       <label for="f-voter">내 이름 (고른 후보는 담당자만 봅니다. 투표 여부는 아래 현황에 공개됩니다)</label>
-      <select id="f-voter" required></select>
+      <select id="f-voter" required aria-describedby="voter-note"></select>
     </div>
+    <p id="voter-note" class="note">이미 투표했어도 다시 투표할 수 있습니다. 다시 투표하면 이전 투표는 새 투표로 바뀝니다.</p>
     <fieldset>
       <legend><span id="pick-legend"></span><span id="picked" class="picked"></span></legend>
       <div id="choices"></div>
@@ -44,6 +45,6 @@
     <ul id="people"></ul>
   </section>
 </main>
-<script type="module" src="./ballot.js?v=6"></script>
+<script type="module" src="./ballot.js?v=8"></script>
 </body>
 </html>
